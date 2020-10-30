@@ -36,8 +36,8 @@ jobs:
           command: choco install firefox-nightly --pre
   test:
     working_directory:  ~/test-changes/
-    # docker:
-      # - image: firefox-standalone:latest
+    executor:
+      name: win/default
     steps:
       - checkout
       - run:
