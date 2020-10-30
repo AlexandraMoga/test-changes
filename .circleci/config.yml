@@ -14,7 +14,7 @@ jobs:
         - checkout
         - run:
             name: Install chocolatey
-            command: @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+            command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
         - run:
             name: Configure chocolatey
             command: choco feature enable -n allowGlobalConfirmation
@@ -55,14 +55,14 @@ jobs:
         environment:
           MOZ_HEADLESS: 1
         command: pytest test_name.py --driver Remote --port 4444 --capability browserName firefox --variables stage.json
-      - store_artifacts:
-          path: ui-test-parallel.html
+        - store_artifacts:
+            path: ui-test-parallel.html
   workflows:
     version: 2.1
       build-and-test:
         jobs:
-          - build
-          - test:
+            - build
+              - test:
               - requires:
                   - build
 
