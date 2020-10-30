@@ -6,7 +6,7 @@ jobs:
     executor:
       name: win/default
       shell: powershel.exe
-    working_directory:  C:\tools
+    working_directory:  ~/test-changes/
 
     steps:
       - checkout
@@ -49,7 +49,7 @@ jobs:
           name: Start the container
           command: docker run -p 4444:4444 --shm-size 2g --rm firefox-standalone:latest
   test:
-    working_directory:  ~/addons-release-tests/
+    working_directory:  ~/test-changes/
     docker:
       - image: firefox-standalone:latest
     steps:
