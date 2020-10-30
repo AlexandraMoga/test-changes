@@ -1,17 +1,16 @@
 version: 2.1
+orbs:
+  win: circleci/windows@2.2.0
 jobs:
   build:
-    docker:
-      - image: mcr.microsoft.com/windows:2004
-
-    # machine:
-        docker_layer_caching: true
-        environment:
-          # IMAGE_REPO: mcr.microsoft.com/windows:2004
-        working_directory:  C:\tools
+    executor:
+      name: win/default
+      shell: powershel.exe
+    working_directory:  C:\tools
 
     steps:
       - checkout
+
       - run:
           name: Install chocolatey
           command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
