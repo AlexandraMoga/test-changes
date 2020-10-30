@@ -7,6 +7,7 @@ jobs:
       name: win/default
       # shell: powershel.exe
     working_directory:  ~/test-changes/
+    environment:
 
     steps:
       - checkout
@@ -28,9 +29,7 @@ jobs:
           command: choco install selenium-gecko-driver
       - run:
           name: Install selenium
-          command: powershell Invoke-WebRequest \
-              -Uri "https://selenium-release.storage.googleapis.com/$env:Selenium_Major_Version/selenium-server-standalone-$env:Selenium_Version.jar" \
-              -OutFile ".\\selenium-server-standalone.jar"
+          command: powershell Invoke-WebRequest -Uri "https://selenium-release.storage.googleapis.com/3.141/selenium-server-standalone-3.141.59.jar" -OutFile ".\\selenium-server-standalone.jar"
       - run:
           name: Install Firefox
           command: choco install firefox-nightly --pre
