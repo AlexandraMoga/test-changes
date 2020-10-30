@@ -5,7 +5,7 @@ jobs:
   build:
     executor:
       name: win/default
-      shell: powershel.exe
+      # shell: powershel.exe
     working_directory:  ~/test-changes/
 
     steps:
