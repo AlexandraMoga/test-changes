@@ -2,57 +2,57 @@ version: 2.1
 jobs:
   build:
     docker:
-      image: firefox-standalone:latest
+      - image: mcr.microsoft.com/windows:2004
 
-      machine:
+    # machine:
         docker_layer_caching: true
         environment:
-          IMAGE_REPO: mcr.microsoft.com/windows:2004
-          working_directory:  C:\\tools
+          # IMAGE_REPO: mcr.microsoft.com/windows:2004
+        working_directory:  C:\tools
 
-      steps:
-        - checkout
-        - run:
-            name: Install chocolatey
-            command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
-        - run:
-            name: Configure chocolatey
-            command: choco feature enable -n allowGlobalConfirmation
-        - run:
-            name: Set driver/browser versions
-            command:
-              ARG Selenium_Major_Version="3.141"
-              ARG Selenium_Version="3.141.59"
-              ARG MOZ_HEADLESS=1
-              ARG GeckoDriver_Version="0.26.0"
-              ARG Firefox_Version="66.0.3"
-        - run:
-            name: Install Visual C++
-            command: choco install vcredist2015
-        - run:
-            name: Install java
-            command: choco install jdk8
-        - run:
-            name: Install geckodriver
-            command: choco install selenium-gecko-driver
-        - run:
-            name: Install selenium
-            command: powershell Invoke-WebRequest \
+    steps:
+      - checkout
+      - run:
+          name: Install chocolatey
+          command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+      - run:
+          name: Configure chocolatey
+          command: choco feature enable -n allowGlobalConfirmation
+      - run:
+          name: Set driver/browser versions
+          command:
+            ARG Selenium_Major_Version="3.141"
+            ARG Selenium_Version="3.141.59"
+            ARG MOZ_HEADLESS=1
+            ARG GeckoDriver_Version="0.26.0"
+            ARG Firefox_Version="66.0.3"
+      - run:
+          name: Install Visual C++
+          command: choco install vcredist2015
+      - run:
+          name: Install java
+          command: choco install jdk8
+      - run:
+          name: Install geckodriver
+          command: choco install selenium-gecko-driver
+      - run:
+          name: Install selenium
+          command: powershell Invoke-WebRequest \
               -Uri "https://selenium-release.storage.googleapis.com/$env:Selenium_Major_Version/selenium-server-standalone-$env:Selenium_Version.jar" \
               -OutFile ".\\selenium-server-standalone.jar"
-        - run:
-            name: Install Firefox
-            command: choco install firefox-nightly --pre
-        - run:
-            name: Build the image
-            command: docker build -t firefox-standalone:latest .
-        - run:
-            name: Start the container
-            command: docker run -p 4444:4444 --shm-size 2g --rm firefox-standalone:latest
+      - run:
+          name: Install Firefox
+          command: choco install firefox-nightly --pre
+      - run:
+          name: Build the image
+          command: docker build -t firefox-standalone:latest .
+      - run:
+          name: Start the container
+          command: docker run -p 4444:4444 --shm-size 2g --rm firefox-standalone:latest
   test:
     working_directory:  ~/addons-release-tests/
-    machine:
-      image: firefox-standalone:latest
+    docker:
+      - image: firefox-standalone:latest
     steps:
       - checkout
       - run:
@@ -62,13 +62,13 @@ jobs:
           command: pytest test_name.py --driver Remote --port 4444 --capability browserName firefox --variables stage.json
       - store_artifacts:
             path: ui-test-parallel.html
-  workflows:
-    version: 2.1
-    build_and_test:
-      jobs:
-          - build
-          - test:
-            - requires:
-                - build
+workflows:
+  # version: 2.1
+  build_and_test:
+    jobs:
+        - build
+        - test:
+          - requires:
+              - build
 
 
