@@ -11,16 +11,6 @@ jobs:
 
     steps:
       - checkout
-      - python/install-packages:
-          pkg-manager: pip
-      - python/install-packages:
-          pip-dependency-file: requirements.txt
-          pkg-manager: pip
-      - python/install-packages:
-          args: pytest
-          pkg-manager: pip
-          pypi-cache: false
-
       - run:
           name: Install chocolatey
           command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
@@ -28,11 +18,11 @@ jobs:
           name: Configure chocolatey
           command: choco feature enable -n allowGlobalConfirmation
       - run:
+          name: Install requirements
+          command: pip install -r ./requirements.txt
+      - run:
           name: Install Visual C++
           command: choco install vcredist2015
-      - run:
-          name: Install requirements
-          command: pip install requirements.txt
       - run:
           name: Install java
           command: choco install jdk8
