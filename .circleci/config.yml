@@ -19,7 +19,7 @@ jobs:
           command: choco feature enable -n allowGlobalConfirmation
       - run:
           name: Install requirements
-          command: pip install -r ./requirements.txt
+          command: pip install --no-deps -r ./requirements.txt
       - run:
           name: Install Visual C++
           command: choco install vcredist2015
