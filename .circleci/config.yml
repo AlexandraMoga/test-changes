@@ -22,9 +22,6 @@ jobs:
           name: Install Visual C++
           command: choco install vcredist2015
       - run:
-          name: Set Python version
-          command: pyenv global 3.7.3
-      - run:
           name: Install requirements
           command: pip install requirements.txt
       - run:
