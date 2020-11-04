@@ -29,7 +29,9 @@ jobs:
           no_output_timeout: 30m
           environment:
           MOZ_HEADLESS: 1
-          command: pytest test_search.py --driver Firefox --variables stage.json
+          command: pytest test_search.py --driver Firefox --variables stage.json --ui-test-serial.html --self-contained-html
+      - store_artifacts:
+          path: ui-test-release.html
   test:
     working_directory:  ~/test-changes/
     executor:
