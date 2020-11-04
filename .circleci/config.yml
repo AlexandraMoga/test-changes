@@ -39,7 +39,7 @@ jobs:
           name: Run tests
           environment:
           MOZ_HEADLESS: 1
-          command: pytest test_search.py --driver Remote --port 4444 --capability browserName firefox --variables stage.json
+          command: pytest test_search.py --driver Firefox --variables stage.json
   test:
     working_directory:  ~/test-changes/
     executor:
