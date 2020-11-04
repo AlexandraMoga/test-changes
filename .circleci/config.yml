@@ -11,21 +11,10 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          name: Install chocolatey
-          command: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
-      - run:
-          name: Configure chocolatey
-          command: choco feature enable -n allowGlobalConfirmation
+
       - run:
           name: Install requirements
           command: pip install --no-deps -r ./requirements.txt
-      - run:
-          name: Install Visual C++
-          command: choco install vcredist2015
-      - run:
-          name: Install java
-          command: choco install jdk8
       - run:
           name: Install geckodriver
           command: choco install selenium-gecko-driver
@@ -50,7 +39,7 @@ jobs:
           name: Run tests
           environment:
           MOZ_HEADLESS: 1
-          command: pytest test_name.py --driver Remote --port 4444 --capability browserName firefox --variables stage.json
+          command: pytest test_search.py --driver Remote --port 4444 --capability browserName firefox --variables stage.json
       - store_artifacts:
             path: ui-test-release.html
 workflows:
